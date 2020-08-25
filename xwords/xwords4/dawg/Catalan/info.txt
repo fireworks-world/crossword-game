@@ -1,0 +1,103 @@
+# -*- mode: conf; -*-
+# Copyright 2002-2009 by Eric House (xwords@eehouse.org).  All rights
+# reserved.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+LANGCODE:ca_ES
+CHARSET: utf-8
+
+NEEDSSORT:true
+
+LANGINFO: <p>Catalan includes several special tiles, "L·L", "NY" and
+LANGINFO: "QU" in addition to Ç.  There are no "Y" or "Q" tiles,
+LANGINFO: and all words containing either of these letters not in
+LANGINFO: combination with a "N" or "U" will be excluded from the
+LANGINFO: dictionary. </p>
+
+LANGINFO: <p>"L" is legal by itself, as are words in which two "L"s
+LANGINFO: appear side-by-side.  The "L·L" tile is used whenever any of
+LANGINFO: these three strings appears in the wordlist you upload:
+LANGINFO: "L-L", "L.L" or "L·L".  (And of course "l-l", "l.l" or
+LANGINFO: "l·l".)</p>
+
+LANGINFO: <p>In addition to the special multi-letter tiles discussed
+LANGINFO: above, the following letters are allowed: A-J, L-V, X, Z and
+LANGINFO: Ç.  Lowercase letters will be converted to uppercase, then
+LANGINFO: words containing letters not listed here will be excluded.</p>
+
+LANGINFO: <p>The file you upload should be encoded in UTF-8.</p>
+
+
+# MSDos LF chars go bye-bye
+LANGFILTER: tr -d '\r'
+
+LANGFILTER: | tr 'a-zç' 'A-ZÇ'
+LANGFILTER: | sed -e 's/L·L/1/g' -e 's/L\.L/1/g' -e 's/L-L/1/g'
+LANGFILTER: | sed -e 's/NY/2/g' -e 's/QU/3/g'
+LANGFILTER: | grep '^[Ç1-3A-JL-VXZ\.]*$'
+
+# substitute in the octal control character values 
+LANGFILTER: | tr '123' '\001\002\003'
+LANGFILTER: | tr -s '\n' '\000'
+
+D2DARGS: -r -term 0 -enc UTF-8
+
+
+# High bit means "official".  Next 7 bits are an enum where
+# Catalan==c.  Low byte is padding
+XLOC_HEADER:0x8C00
+
+
+<BEGIN_TILES>
+2	0	  {"_"}
+12	1     'A'
+2	3     'B'
+3	2     'C'
+1	10	  'Ç'
+3	2	  'D'
+13	1     'E'
+1	4     'F'
+2	3     'G'
+1	8     'H'
+8	1     'I'
+1	8     'J'
+4	1     'L'
+1	10    {"L-L"}
+3	2     'M'
+6	1     'N'
+1	10    {"NY"}
+5	1     'O'
+2	3     'P'
+1	8     {"QU"}
+8	1     'R'
+8	1     'S'
+5	1     'T'
+4	1     'U'
+1	4     'V'
+1	10    'X'
+1	8     'Z'
+<END_TILES>
+#
+# NOTES:
+#------
+#    (1) - Just for avoiding character set mistakes: in the "INT." section of the Palm 
+#          screen keyboard, this letter is on the first line, at the very right of "ae".
+#    (2) - This is another curious catalan double-letter: two "L" separated by a dot.
+#    (3) - In catalan, the "Y" is only used for the double-letter "NY".
+#    (4) - In catalan, the tile is not [Q], i [QU]; because it is not possible to
+#          use a "Q" alone.
+#    (5) - Blank tile.
+

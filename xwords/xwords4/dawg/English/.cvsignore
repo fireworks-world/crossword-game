@@ -1,0 +1,10 @@
+*.bin
+*.pdb
+*.xwd
+*.saved
+*.pdr
+*.ehouse
+*.seb
+decompose
+temp
+*.stamp
